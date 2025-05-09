@@ -35,10 +35,11 @@ export function useCities(initialParams: CitySearchParams = {}) {
       setState(prev => {
         // If we're starting from the beginning (not paginating), replace data
         // Otherwise, append new data
-        const isReset = params.start === 0;
+        const isReset = (params.start ?? 0) === 0;
+
         return {
           data: isReset ? cities : [...prev.data, ...cities],
-          hasMore: params.start + cities.length < total,
+          hasMore: (params.start ?? 0) + cities.length < total,
           isLoading: false,
           error: null,
           total
@@ -112,7 +113,8 @@ export function useCities(initialParams: CitySearchParams = {}) {
     
     setSearchParams(prev => ({
       ...prev,
-      start: prev.start + ROWS_PER_PAGE
+      start: (prev.start ?? 0) + ROWS_PER_PAGE
+
     }));
   }, [state.isLoading, state.hasMore]);
   
